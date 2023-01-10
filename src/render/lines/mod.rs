@@ -178,7 +178,7 @@ fn setup(mut cmds: Commands, mut meshes: ResMut<Assets<Mesh>>) {
             dim::into_handle(meshes.add(mesh)),
             #[cfg(feature = "dim3")]
             (bevy::pbr::NotShadowCaster, bevy::pbr::NotShadowReceiver),
-            SpatialBundle::VISIBLE_IDENTITY,
+            SpatialBundle::INHERITED_IDENTITY,
             NoFrustumCulling,
             DebugLinesMesh(i),
         ));

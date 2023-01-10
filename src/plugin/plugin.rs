@@ -61,12 +61,20 @@ impl<PhysicsHooksData: 'static + WorldQuery + Send + Sync> RapierPhysicsPlugin<P
                 let systems = SystemSet::new()
                     .with_system(systems::update_character_controls) // Run the character controller befor ethe manual transform propagation.
                     .with_system(
-                        bevy::transform::transform_propagate_system
+                        bevy::transform::sync_simple_transforms
+                            .after(systems::update_character_controls),
+                    ) // Run Bevy transform propagation additionally to sync [`GlobalTransform`]
+                    .with_system(
+                        bevy::transform::propagate_transforms
                             .after(systems::update_character_controls),
                     ) // Run Bevy transform propagation additionally to sync [`GlobalTransform`]
                     .with_system(
                         systems::init_async_colliders
-                            .after(bevy::transform::transform_propagate_system),
+                            .after(bevy::transform::sync_simple_transforms),
+                    )
+                    .with_system(
+                        systems::init_async_colliders
+                            .after(bevy::transform::propagate_transforms),
                     )
                     .with_system(systems::apply_scale.after(systems::init_async_colliders))
                     .with_system(systems::apply_collider_user_changes.after(systems::apply_scale))

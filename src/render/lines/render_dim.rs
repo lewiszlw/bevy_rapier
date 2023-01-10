@@ -16,7 +16,7 @@ pub mod r3d {
                 DepthStencilState, FragmentState, FrontFace, MultisampleState, PipelineCache,
                 PolygonMode, PrimitiveState, PrimitiveTopology, RenderPipelineDescriptor,
                 SpecializedMeshPipeline, SpecializedMeshPipelineError, SpecializedMeshPipelines,
-                StencilFaceState, StencilState, TextureFormat, VertexState,
+                StencilFaceState, StencilState, TextureFormat, VertexState, ShaderDefVal,
             },
             texture::BevyDefault,
             view::{ExtractedView, Msaa, ViewTarget},
@@ -47,10 +47,10 @@ pub mod r3d {
             (depth_test, key): Self::Key,
             layout: &MeshVertexBufferLayout,
         ) -> Result<RenderPipelineDescriptor, SpecializedMeshPipelineError> {
-            let mut shader_defs = Vec::new();
-            shader_defs.push("LINES_3D".to_string());
+            let mut shader_defs : Vec<ShaderDefVal>= Vec::new();
+            shader_defs.push("LINES_3D".into());
             if depth_test {
-                shader_defs.push("DEPTH_TEST_ENABLED".to_string());
+                shader_defs.push("DEPTH_TEST_ENABLED".into());
             }
 
             let vertex_buffer_layout = layout.get_layout(&[
